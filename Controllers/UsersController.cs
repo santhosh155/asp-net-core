@@ -1,5 +1,4 @@
 ﻿using DotNetCoreAPI.Model;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,18 +8,17 @@ namespace DotNetCoreAPI.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly APIDbContext _context;
+        private readonly UserService _userService;
 
-        public UsersController(APIDbContext context)
+        public UsersController(UserService userService)
         {
-            _context = context;
+            _userService = userService;
         }
 
-        [HttpGet]
+        [HttpPost]
         public async Task<ActionResult<IEnumerable<Users>>> GetUserList()
         {
-            var users = await _context.Users.ToListAsync();
-
+            var users = await _userService.GetUserListAsync();
             if (users == null || users.Count == 0)
             {
                 return NotFound("No users found.");
