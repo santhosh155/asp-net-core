@@ -2,9 +2,10 @@
 {
     public class RequestOption
     {
-        public int page { get; set; }
-        public int pageSize { get; set; }
-        public Sort sortElement { get; set; }
+        //public string[] Fields {  get; set; }
+        //public int page { get; set; }
+        //public int pageSize { get; set; }
+        public Sort SortElement { get; set; }
     }
 
     public class Sort

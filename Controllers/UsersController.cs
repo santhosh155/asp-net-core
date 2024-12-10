@@ -16,9 +16,9 @@ namespace DotNetCoreAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<IEnumerable<Users>>> GetUserList()
+        public async Task<ActionResult<IEnumerable<Users>>> GetUserList(RequestOption requestOption)
         {
-            var users = await _userService.GetUserListAsync();
+            var users = await _userService.GetUserListAsync(requestOption);
             if (users == null || users.Count == 0)
             {
                 return NotFound("No users found.");

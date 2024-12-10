@@ -13,10 +13,31 @@ namespace DotNetCoreAPI
             _context = context;
         }
 
-        public async Task<List<Users>> GetUserListAsync()
+        public async Task<List<Users>> GetUserListAsync(RequestOption requestOption)
         {
-            return await _context.Users.OrderBy(r => r.FullName).ToListAsync();
+            var record = _context.Users.AsQueryable();
+
+            if (requestOption.SortElement != null)
+            {
+                var propertyName = requestOption.SortElement.PropertyName;
+                var property = typeof(Users).GetProperty(propertyName);
+
+                if (property != null)
+                {
+                    if (requestOption.SortElement.SortOrder == SortOrder.Ascending)
+                    {
+                        record = record.OrderBy(r => EF.Property<object>(r, propertyName));
+                    }
+                    else if (requestOption.SortElement.SortOrder == SortOrder.Descending)
+                    {
+                        record = record.OrderByDescending(r => EF.Property<object>(r, propertyName));
+                    }
+                }
+            }
+
+            return await record.ToListAsync();
         }
+
 
     }
 }
